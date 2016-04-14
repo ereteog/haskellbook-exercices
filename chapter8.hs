@@ -16,3 +16,20 @@ appedCatty = cattyConny "woops"
 
 frappe ::  String -> String
 frappe = flippy "haha"
+
+-- Write a function that recursively sums all numbers
+-- from 1 to n, n being the argument. So that if n was 5,
+-- you’d add 1 + 2 + 3 + 4 + 5 to get 15.
+sum1Ton :: (Eq a, Num a) => a -> a
+sum1Ton 1 = 1
+sum1Ton n = n + (sum1Ton (n - 1))
+
+-- Write a function that multiplies two integral numbers
+-- using recursive summation.
+multRec :: (Integral a) => a -> a -> a
+multRec 0 _ = 0
+multRec _ 0 = 0
+multRec x 1 = x
+multRec x y
+  | x < y = multRec y x
+  | otherwise = x + (multRec x (y - 1))
