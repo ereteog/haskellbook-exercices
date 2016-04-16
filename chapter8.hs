@@ -33,3 +33,23 @@ multRec x 1 = x
 multRec x y
   | x < y = multRec y x
   | otherwise = x + (multRec x (y - 1))
+
+
+-- implement recursive version of divMod with relative numbers
+-- divModRec  10 3 == Result 3 1
+-- divModRec  10 (-3) == Result (-4) (-2)
+-- divModRec  (-10) (-3) == Result 3 (-1)
+-- divModRec  (-10) 3 == Result (-4) 2
+data DivModResult = Result Integer Integer
+                   | DividedByZero deriving Show
+
+divModRec :: Integer -> Integer -> DivModResult
+divModRec num denom = go num denom 0 num
+  where go a b q r
+          | b == 0 = DividedByZero
+          | (a == (b*q + r))
+            && ((abs r) < (abs b))
+            && ((abs (b - r)) < (abs b)) = Result q r
+          | (a < 0) && (b > 0) = go a b (q - 1) (r + b)
+          | (a > 0) && (b < 0) = go a b (q - 1) (r + b)
+          | otherwise = go a b (q + 1) (r - b)
