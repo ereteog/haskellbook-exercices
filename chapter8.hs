@@ -50,6 +50,6 @@ divModRec num denom = go num denom 0 num
           | (a == (b*q + r))
             && ((abs r) < (abs b))
             && ((abs (b - r)) < (abs b)) = Result q r
-          | (a < 0) && (b > 0) = go a b (q - 1) (r + b)
-          | (a > 0) && (b < 0) = go a b (q - 1) (r + b)
+          | (a < 0) && (b > 0)
+            || (a > 0) && (b < 0) = go a b (q - 1) (r + b)
           | otherwise = go a b (q + 1) (r - b)
