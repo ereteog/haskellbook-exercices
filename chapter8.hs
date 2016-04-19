@@ -1,5 +1,7 @@
 module Chapter8 where
 
+import Data.List (intersperse)
+
 func :: [a] -> [a] -> [a]
 func x y = x ++ y
 
@@ -53,3 +55,34 @@ divModRec num denom = go num denom 0 num
           | (a < 0) && (b > 0)
             || (a > 0) && (b < 0) = go a b (q - 1) (r + b)
           | otherwise = go a b (q + 1) (r - b)
+
+-- The McCarthy 91 function yields 𝑥 − 10 when 𝑥 > 100 and 91 otherwise. The function is recursive.
+mc91 :: Integer -> Integer
+mc91 n
+  | n > 100 = n - 10
+  | otherwise = 91
+
+-- digitToWord turns integers from 1-9 into their corresponding English words, ”one,” ”two,” and so on.
+digitToWord :: Int -> String
+digitToWord n = case n of
+  0 -> "zero"
+  1 -> "one"
+  2 -> "two"
+  3 -> "three"
+  4 -> "four"
+  5 -> "five"
+  6 -> "six"
+  7 -> "seven"
+  8 -> "eight"
+  9 -> "nine"
+  _ -> "not a valid number"
+
+-- digits takes the integer, separates the digits, and returns it as a list of integers.
+digits :: Int -> [Int]
+digits n
+  | n < 10 = [n]
+  | otherwise = digits (div n 10) ++ [mod n 10]
+
+-- wordNumber returns the English word version of the Int value.
+wordNumber :: Int -> String
+wordNumber n = concat . intersperse "-" . map digitToWord . digits $ n
