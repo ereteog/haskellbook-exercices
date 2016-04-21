@@ -25,3 +25,20 @@ eftChar x y
     && (y == (maxBound :: Char)) = [(maxBound :: Char)]
   | x > y = []
   | otherwise = x : eftChar (succ x) y
+
+-- function that parameterizes the character
+-- you’re breaking the string argument on
+-- and rewrite myWords and myLines using it.
+mySplit :: Eq a => [a] -> a -> [[a]]
+mySplit [] _ = []
+mySplit (x:xs) sep
+  | x == sep = mySplit xs sep
+  | otherwise = takeWhile (/= sep) (x:xs) : mySplit (dropWhile (== sep) . dropWhile (/= sep) $ xs) sep
+
+-- function that split on spaces
+myWords :: [Char] -> [[Char]]
+myWords sent = mySplit sent ' '
+
+-- function that split on lines
+myLines :: [Char] -> [[Char]]
+myLines sent = mySplit sent '\n'
