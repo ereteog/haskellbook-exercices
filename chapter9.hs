@@ -74,3 +74,71 @@ capitalizeFirst (x:xs) = toUpper x : xs
 -- example: allCaps "audrey" => "AUDREY"
 allCaps :: [Char] -> [Char]
 allCaps xs = map toUpper xs
+
+myOr :: [Bool] -> Bool
+myOr [] = False
+myOr (x:xs) = if x then True else myOr xs
+
+myAny :: (a -> Bool) -> [a] -> Bool
+myAny _ [] = False
+myAny f (x:xs) = f x || myAny f xs
+
+myElem :: Eq a => a -> [a] -> Bool
+myElem _ [] = False
+myElem el (x:xs) = (el == x) || myElem el xs
+
+myElem' :: Eq a => a -> [a] -> Bool
+myElem' el = any (== el)
+
+myReverse :: [a] -> [a]
+myReverse [] = []
+myReverse (x:xs) = myReverse xs ++ [x]
+
+squish :: [[a]] -> [a]
+squish [] = []
+squish [[]] = []
+squish [[], xs] = squish [xs]
+squish ((x:xs):xs') = x : squish (xs:xs')
+
+-- Prelude> squishMap (\x -> [1, x, 3]) [2]
+-- [1,2,3]
+-- Prelude> squishMap (\x -> "WO "++[x]++" HOO ") "123"
+-- "WO 1 HOO WO 2 HOO WO 3 HOO "
+squishMap :: (a -> [b]) -> [a] -> [b]
+squishMap _ [] = []
+squishMap f (x:xs) = (f x) ++ (squishMap f xs)
+
+squishAgain :: [[a]] -> [a]
+squishAgain = squishMap id
+
+-- Prelude> myMaximumBy (\_ _ -> GT) [1..10]
+-- 1
+-- Prelude> myMaximumBy (\_ _ -> LT) [1..10]
+-- 10
+-- Prelude> myMaximumBy compare [1..10]
+-- 10
+myMaximumBy :: (a -> a -> Ordering) -> [a] -> a
+myMaximumBy _ [] = undefined
+myMaximumBy _ [x] = x
+myMaximumBy f (x:x':xs) = if (f x x' == GT)
+                          then myMaximumBy f (x:xs)
+                          else myMaximumBy f (x':xs)
+
+-- Prelude> myMinimumBy (\_ _ -> GT) [1..10]
+-- 10
+-- Prelude> myMinimumBy (\_ _ -> LT) [1..10]
+-- 1
+-- Prelude> myMinimumBy compare [1..10]
+-- 1
+myMinimumBy :: (a -> a -> Ordering) -> [a] -> a
+myMinimumBy _ [] = undefined
+myMinimumBy _ [x] = x
+myMinimumBy f (x:x':xs) = if (f x x' == LT)
+                          then myMinimumBy f (x:xs)
+                          else myMinimumBy f (x':xs)
+
+myMaximum :: (Ord a) =>  [a] -> a
+myMaximum = myMaximumBy compare
+
+myMinimum :: (Ord a) =>  [a] -> a
+myMinimum = myMinimumBy compare
