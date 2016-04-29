@@ -52,3 +52,31 @@ fibsFirstN n = take n fibs
 
 fibsLessThan :: Integer -> [Integer]
 fibsLessThan n = takeWhile (< n) fibs
+
+factorial :: Int -> Integer
+factorial n = (scanl (*) 1 [1..]) !! n
+
+stopVowelStop :: [Char] -> [Char] -> [(Char, Char, Char)]
+stopVowelStop stops vowels = [(x,y,z) | x <- stops, y <- vowels, z <- stops]
+
+pVowelStop :: [Char] -> [Char] -> [(Char, Char, Char)]
+pVowelStop stops vowels = [('p',y,z) | y <- vowels, z <- stops]
+
+nounVerbNoun :: [String] -> [String] -> [(String, String, String)]
+nounVerbNoun nouns verbs = [(x,y,z) | x <- nouns, y <- verbs, z <- nouns]
+
+avgWordsLength :: String -> Double
+avgWordsLength x = (fromIntegral . sum . map length . words $ x)
+                   / (fromIntegral . length . words $ x)
+
+myOr :: [Bool] -> Bool
+myOr = foldr (||) False
+
+myAny :: (a -> Bool) -> [a] -> Bool
+myAny f = foldr ((||) . f) False
+
+myElem :: Eq a => a -> [a] -> Bool
+myElem el = foldr ((||) . (== el)) False
+
+myElemAny :: Eq a => a -> [a] -> Bool
+myElemAny el = any (== el)
