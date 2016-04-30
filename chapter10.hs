@@ -80,3 +80,33 @@ myElem el = foldr ((||) . (== el)) False
 
 myElemAny :: Eq a => a -> [a] -> Bool
 myElemAny el = any (== el)
+
+myReverse :: [a] -> [a]
+myReverse = foldl (flip (:)) []
+
+myMap :: (a -> b) -> [a] -> [b]
+myMap f = foldr ((:) . f) []
+
+myFilter :: (a -> Bool) -> [a] -> [a]
+myFilter f = foldr (\el acc -> if f el then el : acc else acc) []
+
+squish :: [[a]] -> [a]
+squish = foldr (++) []
+
+squishMap :: (a -> [b]) -> [a] -> [b]
+squishMap f = foldr ((++) . f) []
+
+squishAgain :: [[a]] -> [a]
+squishAgain = squishMap id
+
+myMinimumBy :: (a -> a -> Ordering) -> [a] -> a
+myMinimumBy f (x:xs) = foldl (\a b ->
+                                if LT == (f a b)
+                                then a
+                                else b) x xs
+
+myMaximumBy :: (a -> a -> Ordering) -> [a] -> a
+myMaximumBy f (x:xs) = foldl (\a b ->
+                                if GT == (f a b)
+                                then a
+                                else b) x xs
